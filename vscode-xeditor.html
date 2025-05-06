@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>VSCode Editor</title>
+    <style>
+        /* Previous styles remain unchanged */
+        body {
+            margin: 0;
+            padding: 20px;
+            background: #1a1a1a;
+            color: #d4d4d4;
+            font-family: 'Consolas', 'Monaco', monospace;
+        }
+        .editor-container {
+            background: #1e1e1e;
+            border: 1px solid #2d2d2d;
+            border-radius: 6px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+            opacity: 0;
+            transform: translateY(20px);
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+        @keyframes fadeIn {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        .title-bar {
+            background: #252526;
+            padding: 8px 16px;
+            border-bottom: 1px solid #2d2d2d;
+            display: flex;
+            align-items: center;
+        }
+        .title-bar .dot {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            margin-right: 8px;
+            opacity: 0;
+            transform: scale(0.8);
+        }
+        .dot.red { 
+            background: #ff5f56; 
+            animation: popIn 0.3s ease-out 0.1s forwards;
+        }
+        .dot.yellow { 
+            background: #ffbd2e; 
+            animation: popIn 0.3s ease-out 0.2s forwards;
+        }
+        .dot.green { 
+            background: #27c93f; 
+            animation: popIn 0.3s ease-out 0.3s forwards;
+        }
+        @keyframes popIn {
+            50% {
+                opacity: 1;
+                transform: scale(1.2);
+            }
+            100% {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+        #editor {
+            padding: 20px;
+            min-height: 300px;
+            line-height: 1.6;
+            white-space: pre;
+            font-size: 14px;
+            position: relative;
+            transition: background-color 0.3s ease;
+        }
+        #editor:focus {
+            outline: none;
+            background-color: #1c1c1c;
+        }
+        #file-input {
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 4px;
+            background: #2d2d2d;
+            color: #fff;
+            border: 1px solid #3d3d3d;
+            width: 100%;
+            box-sizing: border-box;
+            transition: all 0.3s ease;
+            opacity: 0;
+            animation: slideIn 0.5s ease-out forwards;
+        }
+        @keyframes slideIn {
+            from {
+                opacity: 0;
+                transform: translateX(-20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+        #file-input:hover {
+            background: #353535;
+            border-color: #4d4d4d;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+        }
+        .cursor {
+            display: inline-block;
+            width: 2px;
+            height: 1.2em;
+            background: #007acc;
+            margin-left: 1px;
+            vertical-align: middle;
+            animation: blink 1s ease-in-out infinite;
+            box-shadow: 0 0 8px rgba(0, 122, 204, 0.5);
+        }
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+        span {
+            opacity: 0;
+            animation: fadeInChar 0.2s ease-out forwards;
+        }
+        @keyframes fadeInChar {
+            from {
+                opacity: 0;
+                transform: translateY(5px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        /* Syntax Highlighting */
+        .keyword { color: #569cd6; text-shadow: 0 0 8px rgba(86, 156, 214, 0.3); }
+        .control-flow { color: #c586c0; text-shadow: 0 0 8px rgba(197, 134, 192, 0.3); }
+        .type { color: #4ec9b0; text-shadow: 0 0 8px rgba(78, 201, 176, 0.3); }
+        .class { color: #4ec9b0; text-shadow: 0 0 8px rgba(78, 201, 176, 0.3); }
+        .function { color: #dcdcaa; text-shadow: 0 0 8px rgba(220, 220, 170, 0.3); }
+        .method { color: #dcdcaa; text-shadow: 0 0 8px rgba(220, 220, 170, 0.3); }
+        .property { color: #9cdcfe; text-shadow: 0 0 8px rgba(156, 220, 254, 0.3); }
+        .variable { color: #9cdcfe; text-shadow: 0 0 8px rgba(156, 220, 254, 0.3); }
+        .string { color: #ce9178; text-shadow: 0 0 8px rgba(206, 145, 120, 0.3); }
+        .number { color: #b5cea8; text-shadow: 0 0 8px rgba(181, 206, 168, 0.3); }
+        .comment { color: #6a9955; text-shadow: 0 0 8px rgba(106, 153, 85, 0.3); }
+        .operator { color: #d4d4d4; }
+        .punctuation { color: #d4d4d4; }
+        .module { color: #569cd6; text-shadow: 0 0 8px rgba(86, 156, 214, 0.3); }
+    </style>
+</head>
+<body>
+    <input type="file" id="file-input" accept=".txt,.js,.py,.html,.css,.json,.ts,.jsx,.tsx">
+    <div class="editor-container">
+        <div class="title-bar">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+        </div>
+        <div id="editor"></div>
+    </div>
+
+    <script>
+        // Previous JavaScript remains unchanged
+        const editor = document.getElementById('editor');
+        const fileInput = document.getElementById('file-input');
+        const typingSpeed = 2;
+
+        function createCursor() {
+            const cursor = document.createElement('span');
+            cursor.className = 'cursor';
+            return cursor;
+        }
+
+        function processToken(text) {
+            const patterns = [
+                { pattern: /^(use client|const|let|var|function|class|interface|enum|import|export|from|as|default|async|await)\b/, class: 'keyword' },
+                { pattern: /^(if|else|for|while|do|switch|case|break|continue|return|try|catch)\b/, class: 'control-flow' },
+                { pattern: /^[A-Z][a-zA-Z]*(?=\s|[.,;{}()\[\]]|$)/, class: 'class' },
+                { pattern: /^[a-z]+(?=\()/, class: 'function' },
+                { pattern: /^(["'`])(?:(?!\1).)*\1/, class: 'string' },
+                { pattern: /^\/\/.*$/, class: 'comment' },
+                { pattern: /^[0-9]+(?:\.[0-9]+)?/, class: 'number' },
+                { pattern: /^([\{\}\[\]\(\),.;])/, class: 'punctuation' },
+                { pattern: /^(=|\+|-|\*|\/|>|<|!|&|\|)/, class: 'operator' },
+                { pattern: /^[a-zA-Z_$][a-zA-Z0-9_$]*/, class: 'variable' }
+            ];
+
+            for (const { pattern, class: className } of patterns) {
+                const match = text.match(pattern);
+                if (match) {
+                    return {
+                        text: match[0],
+                        class: className,
+                        length: match[0].length
+                    };
+                }
+            }
+
+            return {
+                text: text[0],
+                class: null,
+                length: 1
+            };
+        }
+
+        function typeText(text) {
+            editor.innerHTML = '';
+            const cursor = createCursor();
+            editor.appendChild(cursor);
+            
+            let pos = 0;
+            let currentLine = '';
+            let delay = 0;
+            
+            function type() {
+                if (pos < text.length) {
+                    if (text[pos] === '\n') {
+                        editor.insertBefore(document.createTextNode('\n'), cursor);
+                        currentLine = '';
+                        pos++;
+                        delay = Math.random() * 100 + 50; // Variable delay for natural feel
+                    } else {
+                        const remainingText = text.slice(pos);
+                        const token = processToken(remainingText);
+                        const span = document.createElement('span');
+                        if (token.class) {
+                            span.className = token.class;
+                        }
+                        span.textContent = token.text;
+                        span.style.animationDelay = `${delay}ms`;
+                        editor.insertBefore(span, cursor);
+                        pos += token.length;
+                        delay = Math.random() * 30 + 20; // Faster typing within tokens
+                    }
+                    setTimeout(type, delay);
+                }
+            }
+            type();
+        }
+
+        fileInput.addEventListener('change', (event) => {
+            const file = event.target.files[0];
+            const reader = new FileReader();
+            
+            reader.onload = (e) => {
+                typeText(e.target.result);
+            };
+            
+            reader.readAsText(file);
+        });
+    </script>
+</body>
+</html>
