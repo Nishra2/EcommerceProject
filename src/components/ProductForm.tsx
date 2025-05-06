@@ -1,6 +1,5 @@
 'use client';
-import React, { useState } from 'react';
-
+import React, { useState, useEffect } from 'react';
 import ImageUploader from './ImageUploader';
 import { Product } from "@/models/product";
 
@@ -15,12 +14,29 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialProduct, onSubmit }) =
     const [price, setPrice] = useState(initialProduct?.price?.toString() || '');
     const [images, setImages] = useState<string[]>(initialProduct?.images || []);
     const [isFeatured, setIsFeatured] = useState(initialProduct?.isFeatured || false);
+    const [category, setCategory] = useState(initialProduct?.category || 'uncategorized');
+    const [categories, setCategories] = useState<string[]>([]);
+
+    useEffect(() => {
+        // Fetch categories when component mounts
+        const fetchCategories = async () => {
+            try {
+                const response = await fetch('/api/categories');
+                if (response.ok) {
+                    const data = await response.json();
+                    setCategories(['uncategorized', ...data]);
+                }
+            } catch (error) {
+                console.error('Error fetching categories:', error);
+            }
+        };
+        
+        fetchCategories();
+    }, []);
 
     const handleImageUpload = (uploadedImages: string[]) => {
-        //setImages(uploadedImages);
         setImages([...images, ...uploadedImages]);
     };
-
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
@@ -30,6 +46,7 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialProduct, onSubmit }) =
             description,
             price: parseFloat(price),
             images: images,
+            category,
             isFeatured: isFeatured,
         };
         onSubmit(product);
@@ -65,6 +82,21 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialProduct, onSubmit }) =
                     placeholder="Product Description"
                     required
                 />
+            </div>
+            <div>
+                <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
+                <select
+                    id="category"
+                    value={category}
+                    onChange={(e) => setCategory(e.target.value)}
+                    className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                >
+                    {categories.map((cat) => (
+                        <option key={cat} value={cat}>
+                            {cat.charAt(0).toUpperCase() + cat.slice(1)}
+                        </option>
+                    ))}
+                </select>
             </div>
             <div>
                 <label htmlFor="price" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Price</label>
@@ -114,7 +146,6 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialProduct, onSubmit }) =
             </div>
         </form>
     );
-
 };
 
 export default ProductForm;

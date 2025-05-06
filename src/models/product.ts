@@ -6,4 +6,5 @@ export interface Product {
   imageUrl?: string;
   images: string[];
   isFeatured?: boolean;
+  category?: string;
 }

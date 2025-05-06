@@ -70,14 +70,7 @@ const LoginPage = () => {
                         </Link>
                     </div>
                 </form>
-                <div className="mt-4 text-center">
-                    <button
-                        className="px-4 py-2 text-white bg-red-500 rounded-md hover:bg-red-600 focus:outline-none focus:shadow-outline-red active:bg-red-800"
-                        onClick={() => signIn('google')}
-                    >
-                        Sign in with Google
-                    </button>
-                </div>
+                
             </div>
         </div>
     );

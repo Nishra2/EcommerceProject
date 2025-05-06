@@ -34,6 +34,7 @@ model Product {
   price       Float
   images      String[]
   isFeatured  Boolean  @default(false)
+  category    String   @default("uncategorized")
 }
 
 model File {

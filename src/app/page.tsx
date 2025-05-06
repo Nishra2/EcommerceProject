@@ -1,10 +1,9 @@
 'use client';
 import React, { useState, useEffect } from 'react';
-
 import { Carousel } from 'flowbite-react';
 import { Product } from "@/models/product";
 import ProductList from "@/components/ProductList";
-
+import CategoryFilter from "@/components/CategoryFilter";
 
 const SearchBar: React.FC<{ onSearch: (term: string) => void }> = ({ onSearch }) => {
   const [searchTerm, setSearchTerm] = useState('');
@@ -29,10 +28,11 @@ const SearchBar: React.FC<{ onSearch: (term: string) => void }> = ({ onSearch })
   );
 };
 
-
 const HomePage = () => {
   const [searchTerm, setSearchTerm] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState('');
   const [products, setProducts] = useState<Array<Product>>([]);
+  const [categories, setCategories] = useState<string[]>([]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -43,9 +43,21 @@ const HomePage = () => {
     fetchProducts();
   }, []);
 
+  useEffect(() => {
+    const fetchCategories = async () => {
+      const response = await fetch('/api/categories');
+      const data = await response.json();
+      setCategories(data);
+    };
+    fetchCategories();
+  }, []);
 
   const handleSearch = (term: string) => {
     setSearchTerm(term);
+  };
+
+  const handleCategoryChange = (category: string) => {
+    setSelectedCategory(category);
   };
 
   return (
@@ -80,9 +92,18 @@ const HomePage = () => {
         <SearchBar onSearch={handleSearch} />
       </section>
 
+      {/* Category Filter Section */}
+      <section className="py-5">
+        <CategoryFilter 
+          categories={categories} 
+          selectedCategory={selectedCategory} 
+          onCategoryChange={handleCategoryChange} 
+        />
+      </section>
+
       {/* Product List Section */}
       <section className="py-10">
-        <ProductList searchTerm={searchTerm} />
+        <ProductList searchTerm={searchTerm} selectedCategory={selectedCategory} />
       </section>
     </div>
   );
