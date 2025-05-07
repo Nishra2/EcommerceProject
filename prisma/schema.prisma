@@ -46,8 +46,8 @@ model File {
 
 model Order {
   id          Int      @id @default(autoincrement())
-  userId      Int
-  user        User     @relation(fields: [userId], references: [id])
+  userId      Int?
+  user        User?    @relation(fields: [userId], references: [id])
   email       String
   name        String?
   address     String?
