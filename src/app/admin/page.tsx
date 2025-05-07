@@ -1,8 +1,6 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-
-
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
@@ -48,7 +46,7 @@ const AdminPage = () => {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${(session?.user as any)?.token}`,
+    
                 },
                 body: JSON.stringify({ id: product.id }),
             });
@@ -68,7 +66,7 @@ const AdminPage = () => {
                 method,
                 headers: {
                     'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${(session?.user as any)?.token}`,
+                    
                 },
                 body: JSON.stringify(product),
             });
