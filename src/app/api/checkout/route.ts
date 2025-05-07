@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import Stripe from "stripe";
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+  // @ts-ignore: Using a different API version than the latest
   apiVersion: "2024-12-18.acacia",
 });
 
@@ -21,7 +22,7 @@ export async function POST(req: Request) {
 
     const line_items = cartItems.map((item: any) => ({
       price_data: {
-        currency: "usd",
+        currency: "aud",
         product_data: {
           name: item.name,
         },
@@ -35,6 +36,9 @@ export async function POST(req: Request) {
       mode: "payment",
       success_url: `${req.headers.get("origin")}/success`,
       cancel_url: `${req.headers.get("origin")}/cancel`,
+      metadata: {
+        userId: req.headers.get("user-id") || "unknown" 
+      }
     });
 
     return NextResponse.json(

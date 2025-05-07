@@ -5,14 +5,17 @@ import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Product } from "@/models/product";
+import { Order } from "@prisma/client";
 import ProductForm from "@/components/ProductForm";
 import ProductTable from "@/components/ProductTable";
+import OrderTable from "@/components/OrderList";
 
 const AdminPage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const { data: session } = useSession();
     const router = useRouter();
     const [products, setProducts] = useState<Product[]>([]);
+    const [orders, setOrders] = useState<Order[]>([]);
     const [editingProduct, setEditingProduct] = useState<Product | null>(null);
 
     useEffect(() => {
@@ -32,7 +35,22 @@ const AdminPage = () => {
                 console.error('Error fetching products:', error);
             }
         };
+        
+        const fetchOrders = async () => {
+            try {
+                const response = await fetch('/api/orders');
+                if (!response.ok) {
+                    throw new Error(`HTTP error! status: ${response.status}`);
+                }
+                const data = await response.json();
+                setOrders(data);
+            } catch (error) {
+                console.error('Error fetching orders:', error);
+            }
+        };
+        
         fetchProducts();
+        fetchOrders();
     }, [session, router]);
 
     const handleEditProduct = (product: Product) => {
@@ -46,7 +64,6 @@ const AdminPage = () => {
                 method: 'DELETE',
                 headers: {
                     'Content-Type': 'application/json',
-    
                 },
                 body: JSON.stringify({ id: product.id }),
             });
@@ -66,7 +83,6 @@ const AdminPage = () => {
                 method,
                 headers: {
                     'Content-Type': 'application/json',
-                    
                 },
                 body: JSON.stringify(product),
             });
@@ -86,6 +102,8 @@ const AdminPage = () => {
         }
     };
 
+    
+
     return (
         <Card>
             <CardHeader>
@@ -103,12 +121,16 @@ const AdminPage = () => {
                         Create Product
                     </button>
                 </div>
-
             </CardHeader>
             <CardContent className="grid grid-cols-1 gap-4">
-
                 <div>
+                    <h2 className="text-xl font-semibold mb-4">Products</h2>
                     <ProductTable products={products} onEdit={handleEditProduct} onDelete={handleDeleteProduct} />
+                </div>
+                
+                <div className="mt-8">
+                    <h2 className="text-xl font-semibold mb-4">Orders</h2>
+                    <OrderTable order={orders} />
                 </div>
             </CardContent>
             {isModalOpen && (
