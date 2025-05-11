@@ -59,37 +59,43 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialProduct, onSubmit }) =
     };
 
     return (
-        <form onSubmit={handleSubmit} className="space-y-4">
+        <form onSubmit={handleSubmit} className="space-y-4" data-testid="product-form">
             <div>
                 <label htmlFor="name" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Name</label>
                 <input
                     type="text"
                     id="name"
+                    name="name"
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Product Name"
                     required
+                    data-testid="product-form-name"
                 />
             </div>
             <div>
                 <label htmlFor="description" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Description</label>
                 <textarea
                     id="description"
+                    name="description" 
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Product Description"
                     required
+                    data-testid="product-form-description"
                 />
             </div>
             <div>
                 <label htmlFor="category" className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Category</label>
                 <select
                     id="category"
+                     name="category"
                     value={category}
                     onChange={(e) => setCategory(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                    data-testid="product-form-category"
                 >
                     {categories.map((cat) => (
                         <option key={cat} value={cat}>
@@ -103,34 +109,40 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialProduct, onSubmit }) =
                 <input
                     type="number"
                     id="price"
+                    name="price"
                     value={price}
                     onChange={(e) => setPrice(e.target.value)}
                     className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
                     placeholder="Product Price"
                     required
+                    data-testid="product-form-price"
                 />
             </div>
             <div className="flex items-center">
                 <input
                     type="checkbox"
+                    name="isFeatured"
                     id="isFeatured"
                     checked={isFeatured}
                     onChange={(e) => setIsFeatured(e.target.checked)}
                     className="w-4 h-4 text-blue-600 bg-gray-100 border-gray-300 rounded focus:ring-blue-500 dark:focus:ring-blue-600 dark:ring-offset-gray-800 focus:ring-2 dark:bg-gray-700 dark:border-gray-600"
+                    data-testid="product-form-featured"
                 />
                 <label htmlFor="isFeatured" className="ml-2 text-sm font-medium text-gray-900 dark:text-gray-300">Featured</label>
+
             </div>
             <ImageUploader onUpload={handleImageUpload} />
             {images.length > 0 && (
-                <div className="mt-4">
+                <div className="mt-4" data-testid="product-form-images-preview">
                     <h4 className="block mb-2 text-sm font-medium text-gray-900 dark:text-white">Image Preview</h4>
                     <div className="flex overflow-x-auto space-x-4">
                         {images.map((image, index) => (
-                            <div key={index} className="relative w-32 h-32 m-2">
+                            <div key={index} className="relative w-32 h-32 m-2" data-testid={`product-form-image-${index}`}>
                                 <img src={image} alt={`Product Image ${index + 1}`} className="object-cover w-full h-full" />
                                 <button
                                     onClick={() => handleRemoveImage(index)}
                                     className="absolute top-0 right-0 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center"
+                                    data-testid={`product-form-remove-image-${index}`}
                                 >
                                     X
                                 </button>
@@ -140,7 +152,8 @@ const ProductForm: React.FC<ProductFormProps> = ({ initialProduct, onSubmit }) =
                 </div>
             )}
             <div className="flex justify-end">
-                <button type="submit" className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">
+                <button type="submit" className="w-full text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                data-testid="product-form-submit">
                     {'Save'}
                 </button>
             </div>

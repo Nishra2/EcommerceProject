@@ -23,6 +23,7 @@ const SearchBar: React.FC<{ onSearch: (term: string) => void }> = ({ onSearch })
         className="border p-3 rounded w-full md:w-1/2 animate-slide-in-right"
         value={searchTerm}
         onChange={handleSearchChange}
+          data-testid="search-input"
       />
     </div>
   );
@@ -89,7 +90,9 @@ const HomePage = () => {
 
       {/* Search Product Section */}
       <section className="py-10">
-        <SearchBar onSearch={handleSearch} />
+        <SearchBar onSearch={handleSearch}
+        
+         />
       </section>
 
       {/* Category Filter Section */}

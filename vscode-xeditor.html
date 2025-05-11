@@ -3,7 +3,7 @@
 <head>
     <title>VSCode Editor</title>
     <style>
-        /* Previous styles remain unchanged */
+       
         body {
             margin: 0;
             padding: 20px;
@@ -163,7 +163,7 @@
     </div>
 
     <script>
-        // Previous JavaScript remains unchanged
+        
         const editor = document.getElementById('editor');
         const fileInput = document.getElementById('file-input');
         const typingSpeed = 2;
@@ -221,7 +221,7 @@
                         editor.insertBefore(document.createTextNode('\n'), cursor);
                         currentLine = '';
                         pos++;
-                        delay = Math.random() * 100 + 50; // Variable delay for natural feel
+                        delay = Math.random() * 100 + 50; 
                     } else {
                         const remainingText = text.slice(pos);
                         const token = processToken(remainingText);
@@ -233,7 +233,7 @@
                         span.style.animationDelay = `${delay}ms`;
                         editor.insertBefore(span, cursor);
                         pos += token.length;
-                        delay = Math.random() * 30 + 20; // Faster typing within tokens
+                        delay = Math.random() * 30 + 20; 
                     }
                     setTimeout(type, delay);
                 }

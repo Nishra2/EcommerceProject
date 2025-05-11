@@ -35,14 +35,14 @@ const ProductList: React.FC<ProductListProps> = ({ searchTerm, selectedCategory 
   }, [searchTerm, selectedCategory, products]);
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4">
+    <div className="container mx-auto px-4 py-8" data-testid="products-container">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4" data-testid="products-grid">
         {filteredProducts.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
       </div>
       {filteredProducts.length === 0 && (
-        <p className="text-center text-gray-500 mt-8">No products found matching your criteria.</p>
+        <p className="text-center text-gray-500 mt-8" data-testid="no-products-message">No products found matching your criteria.</p>
       )}
     </div>
   );
