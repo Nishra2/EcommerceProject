@@ -200,6 +200,7 @@ test.describe("Admin page functionality", () => {
   
     await page.goto('/admin');
     
+    // Wait for products to load
     await page.waitForSelector('[data-testid^="delete-product-"]', { timeout: 10000 });
     
 

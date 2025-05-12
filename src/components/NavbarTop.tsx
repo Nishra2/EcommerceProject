@@ -42,7 +42,7 @@ const NavbarTop = () => {
             </Link>
           </>
         )}
-        <Dropdown label={session ? session.user?.name : 'User'}  >
+        <Dropdown label={session ? session.user?.name : 'Guest'}  >
           {session ? (
             <Dropdown.Item onClick={() => signOut()}>
               Logout
