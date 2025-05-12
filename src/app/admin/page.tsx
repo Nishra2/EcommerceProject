@@ -107,7 +107,7 @@ const AdminPage = () => {
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Admin Panel</CardTitle>
+                <CardTitle data-testid="admin-panel-title">Admin Panel</CardTitle>
                 <div className="flex justify-end">
                     <button id="createProductButton" className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded" onClick={() => {
                         setEditingProduct({
@@ -124,12 +124,12 @@ const AdminPage = () => {
             </CardHeader>
             <CardContent className="grid grid-cols-1 gap-4">
                 <div>
-                    <h2 className="text-xl font-semibold mb-4">Products</h2>
+                    <h2 className="text-xl font-semibold mb-4" data-testid="products-section-title">Products</h2>
                     <ProductTable products={products} onEdit={handleEditProduct} onDelete={handleDeleteProduct} />
                 </div>
                 
                 <div className="mt-8">
-                    <h2 className="text-xl font-semibold mb-4">Orders</h2>
+                    <h2 className="text-xl font-semibold mb-4" data-testid="orders-section-title">Orders</h2>
                     <OrderTable order={orders} />
                 </div>
             </CardContent>
@@ -139,7 +139,8 @@ const AdminPage = () => {
                         <div className="fixed inset-0 bg-gray-500 bg-opacity-75 transition-opacity" onClick={() => setIsModalOpen(false)}></div>
                         <div className="relative bg-white rounded-lg text-left overflow-hidden shadow-xl transform transition-all sm:my-8 sm:max-w-lg sm:w-full">
                             <div className="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                                <h3 className="text-lg leading-6 font-medium text-gray-900">
+                                <h3 className="text-lg leading-6 font-medium text-gray-900"   data-testid={editingProduct?.id ? "edit-product-modal-title" : "create-product-modal-title"}
+                                >
                                     {editingProduct?.id ? 'Edit Product' : 'Create New Product'}
                                 </h3>
                                 <ProductForm initialProduct={editingProduct} onSubmit={handleProductSubmit} />

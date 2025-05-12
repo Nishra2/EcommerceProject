@@ -27,8 +27,8 @@ const OrderTable: React.FC<OrderTableProps> = ({ order }) => {
     };
 
     return (
-        <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
+        <div className="overflow-x-auto"data-testid="order-table-container">
+            <table className="min-w-full divide-y divide-gray-200"data-testid="order-table">
                 <thead className="bg-gray-50">
                     <tr>
                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Order ID</th>
@@ -39,16 +39,16 @@ const OrderTable: React.FC<OrderTableProps> = ({ order }) => {
                 </thead>
                 <tbody className="bg-white divide-y divide-gray-200">
                     {order.map((item) => (
-                        <tr key={item.id}>
-                            <td className="px-6 py-4 whitespace-nowrap">{item.id}</td>
-                            <td className="px-6 py-4">
-                                <div>{item.name || 'Guest'}</div>
-                                <div className="text-sm text-gray-500">{item.email}</div>
+                        <tr key={item.id} data-testid={`order-row-${item.id}`}>
+                            <td className="px-6 py-4 whitespace-nowrap" data-testid={`order-id-${item.id}`}>{item.id}</td>
+                            <td className="px-6 py-4" data-testid={`order-customer-${item.id}`}>
+                                <div data-testid={`order-customer-name-${item.id}`} >{item.name || 'Guest'}</div>
+                                <div className="text-sm text-gray-500" data-testid={`order-customer-email-${item.id}`}>{item.email}</div>
                             </td>
-                            <td className="px-6 py-4">
+                            <td className="px-6 py-4" data-testid={`order-items-${item.id}`}>
                                 {renderLineItems(item.lineItems)}
                             </td>
-                            <td className="px-6 py-4 whitespace-nowrap">
+                            <td className="px-6 py-4 whitespace-nowrap"data-testid={`order-total-${item.id}`}>
                                 ${item.totalAmount.toFixed(2)}
                             </td>
                         </tr>

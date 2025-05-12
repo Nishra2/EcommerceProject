@@ -51,6 +51,7 @@ const RegisterPage = () => {
                             Name
                         </label>
                         <input
+                            data-testid="register-name-input"
                             className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600"
                             type="text"
                             placeholder="Name"
@@ -63,6 +64,7 @@ const RegisterPage = () => {
                             Email
                         </label>
                         <input
+                             data-testid="register-email-input"
                             className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600"
                             type="email"
                             placeholder="Email"
@@ -75,6 +77,7 @@ const RegisterPage = () => {
                             Password
                         </label>
                         <input
+                            data-testid="register-password-input"
                             className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600"
                             type="password"
                             placeholder="Password"
@@ -83,7 +86,7 @@ const RegisterPage = () => {
                         />
                     </div>
                     <div className="flex items-center justify-between mt-6">
-                        <button className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue active:bg-blue-800" type="submit">
+                        <button data-testid="register-submit-button"  className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue active:bg-blue-800" type="submit">
                             Register
                         </button>
                         <Link href="/login" className="text-sm text-blue-500 hover:underline">

@@ -13,10 +13,11 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
   onCategoryChange 
 }) => {
   return (
-    <div className="container mx-auto mb-8">
+    <div className="container mx-auto mb-8" data-testid="category-filter-container">
       <h2 className="text-2xl font-bold mb-4 text-center">Filter by Category</h2>
-      <div className="flex flex-wrap justify-center gap-2">
+      <div className="flex flex-wrap justify-center gap-2"data-testid="category-filters">
         <button
+        data-testid="category-filter-All"
           onClick={() => onCategoryChange('')}
           className={`px-4 py-2 rounded-full border ${
             selectedCategory === '' 
@@ -29,6 +30,7 @@ const CategoryFilter: React.FC<CategoryFilterProps> = ({
         {categories.map((category) => (
           <button
             key={category}
+            data-testid={`category-filter-${category}`}
             onClick={() => onCategoryChange(category)}
             className={`px-4 py-2 rounded-full border ${
               selectedCategory === category 
