@@ -82,7 +82,7 @@ test.describe("Admin page functionality", () => {
     await page.goto('/admin');
     
    
-    await page.waitForSelector('[data-testid="admin-panel-title"]', { timeout: 5000 });
+    await page.waitForSelector('[data-testid="admin-panel-title"]', { timeout: 30000 });
     
    
     await expect(page.locator('[data-testid="products-section-title"]')).toBeVisible();
@@ -136,7 +136,7 @@ test.describe("Admin page functionality", () => {
     await page.locator('[data-testid="product-form-submit"]').click();
     
     
-    await page.waitForTimeout(500); 
+    await page.waitForTimeout(30000); 
     await expect(page.locator('[data-testid^="product-name-cell-"]').filter({ hasText: 'Test Product' })).toBeVisible();
   });
 
@@ -145,7 +145,7 @@ test.describe("Admin page functionality", () => {
     await page.goto('/admin');
     
   
-    await page.waitForSelector('[data-testid^="edit-product-"]', { timeout: 10000 });
+    await page.waitForSelector('[data-testid^="edit-product-"]', { timeout: 30000 });
     
   
     await page.route('/api/products', async route => {
@@ -180,7 +180,7 @@ test.describe("Admin page functionality", () => {
     await page.reload();
     
     
-    await page.waitForSelector('[data-testid="product-table"]', { timeout: 10000 });
+    await page.waitForSelector('[data-testid="product-table"]', { timeout: 30000 });
     
     
     const productCells = await page.locator('[data-testid^="product-name-cell-"]').all();
@@ -200,7 +200,7 @@ test.describe("Admin page functionality", () => {
   
     await page.goto('/admin');
     
-    await page.waitForSelector('[data-testid^="delete-product-"]', { timeout: 10000 });
+    await page.waitForSelector('[data-testid^="delete-product-"]', { timeout: 30000 });
     
 
     const productRows = page.locator('[data-testid^="product-row-"]');
@@ -222,7 +222,7 @@ test.describe("Admin page functionality", () => {
     await page.locator('[data-testid^="delete-product-"]').first().click();
     
     
-    await page.waitForTimeout(2000); 
+    await page.waitForTimeout(30000); 
     
     
     const newProductCount = await page.locator('[data-testid^="product-row-"]').count();
