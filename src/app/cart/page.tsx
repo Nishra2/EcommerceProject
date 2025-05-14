@@ -5,7 +5,7 @@ import React from 'react';
 
 const CartPage: React.FC = () => {
     return (
-        <div>
+        <div className="bg-blue-200 min-h-screen flex items-center justify-center">
             <ShoppingCart />
         </div>
     );
