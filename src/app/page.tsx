@@ -64,39 +64,37 @@ const HomePage = () => {
   return (
     <div>
       {/* Hero Section */}
-      <section className="bg-gray-100 py-20">
-        <div className="container mx-auto text-center">
-          <h1 className="text-5xl font-bold mb-6 animate-fade-in-down">Catch Our Amazing Collection</h1>
-          <p className="text-lg text-gray-700 mb-10 animate-fade-in-down delay-100">Explore a wide range of high-quality products.</p>
+      <section className="bg-amber-300 py-20">
+        <div className= "container mx-auto text-center">
+          <h1 className="text-5xl font-bold mb-6 animate-fade-in-down">Explore Speed Merch's amazing products</h1>
+          <p className="text-lg text-gray-700 mb-10 animate-fade-in-down delay-100">View current featured products below</p>
           <div className="w-full h-96">
+              <div className="bg-amber-300 h-full w-full">
             <Carousel>
               {products.map((product) => (
                 <div key={product.id} className="flex justify-center items-center">
                   {product.images && product.images.length > 0 ? (
-                    <a href={`/products/${product.id}`}>
                       <img src={product.images[0]} alt={product.name} className="max-h-96 object-contain" />
-                    </a>
                   ) : (
-                    <a href={`/products/${product.id}`}>
                       <img src="/not-found.jpg" alt={product.name} className="max-h-96 object-contain" />
-                    </a>
                   )}
                 </div>
               ))}
             </Carousel>
           </div>
         </div>
+        </div>
       </section>
 
       {/* Search Product Section */}
-      <section className="py-10">
+      <section className="bg-blue-200 py-10">
         <SearchBar onSearch={handleSearch}
         
          />
       </section>
 
       {/* Category Filter Section */}
-      <section className="py-5">
+      <section className="py-5 rounded-full uppercase leading-tight shadow-mx cursor-pointer">
         <CategoryFilter 
           categories={categories} 
           selectedCategory={selectedCategory} 
@@ -105,7 +103,7 @@ const HomePage = () => {
       </section>
 
       {/* Product List Section */}
-      <section className="py-10">
+      <section className=" bg-blue-200 py-10">
         <ProductList searchTerm={searchTerm} selectedCategory={selectedCategory} />
       </section>
     </div>

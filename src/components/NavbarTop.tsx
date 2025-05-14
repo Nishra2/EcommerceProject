@@ -15,8 +15,8 @@ const NavbarTop = () => {
   return (
     <Navbar fluid rounded>
       <Navbar.Brand as={Link} href="/">
-        <img src="/logo.png" className="mr-3 h-6 sm:h-9" alt="Flowbite React Logo" />
-        <span className="self-center whitespace-nowrap text-xl font-semibold dark:text-white">Speed Merch</span>
+        <img src="/logo.png" className="mr-0 h-20 sm:h-20"/>
+        <span className="whitespace-nowrap text-2xl font-semibold dark:text-white">Speed Merch</span>
       </Navbar.Brand>
 
 
