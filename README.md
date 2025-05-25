@@ -1,38 +1,20 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+This Project was created using next.js alongside neon postgres serverless database, continuous integration with github actions. stripe transactions API system and deployed on vercel applications for continuous delivery.
 
-## Getting Started
+# Ecommerce Project
+This simple custom made Ecommerce project looks to serve the community on amazing products ranging from entertainment to needs.
 
-First, run the development server:
+#SET UP INSTRUCTIONS
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+1. Create accounts for Vercel, stripe, neon postgres and github.
+2. Create a yaml file in the project and customise your own  CI pipeline and connect and create a workflow with github actions with variables.
+3. Connect secret variables from Stripe and neon postgres in .env file to access for the project.
+4. Create a endpoint for the stripe webhook to listen to for transactions.
+5. Apply all variables and settings through vercel and deploy the application.
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+#Important Notes: 
+The current Tailwind version is being using is 3.4, not the latest if you decide to use the latest tailwind versions, there could be issues with the flow-bite UI library being used in this project.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+Zustand is being used for global state mangagement for this project, and not the react.js context library.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
 
-## Learn More
 
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
-
-## Next Ecommerce
