@@ -9,6 +9,7 @@ import { Order } from "@prisma/client";
 import ProductForm from "@/components/ProductForm";
 import ProductTable from "@/components/ProductTable";
 import OrderTable from "@/components/OrderList";
+import { Pagination } from 'flowbite-react';
 
 const AdminPage = () => {
     const [isModalOpen, setIsModalOpen] = useState(false);
@@ -17,6 +18,15 @@ const AdminPage = () => {
     const [products, setProducts] = useState<Product[]>([]);
     const [orders, setOrders] = useState<Order[]>([]);
     const [editingProduct, setEditingProduct] = useState<Product | null>(null);
+    const [currentPage, setCurrentPage] = useState(1);
+    const [ordersPerPage] = useState(10); // You can adjust this number
+     const indexOfLastOrder = currentPage * ordersPerPage;
+    const indexOfFirstOrder = indexOfLastOrder - ordersPerPage;
+    const currentOrders = orders.slice(indexOfFirstOrder, indexOfLastOrder);
+
+    const onPageChange = (page: number) => {
+        setCurrentPage(page);
+    };
 
     useEffect(() => {
         if ((session?.user as any)?.role !== 'ADMIN') {
@@ -129,9 +139,30 @@ const AdminPage = () => {
                 </div>
                 
                 <div className="mt-8">
-                    <h2 className="text-xl font-semibold mb-4" data-testid="orders-section-title">Orders</h2>
-                    <OrderTable order={orders} />
-                </div>
+    <h2 className="text-xl font-semibold mb-4" data-testid="orders-section-title">Orders</h2>
+    <OrderTable order={currentOrders} /> {/* Pass currentOrders instead of all orders */}
+    
+    {/* Add pagination below the table */}
+    <div className="flex flex-col items-center mt-4">
+        <span className="text-sm text-gray-700 dark:text-gray-400">
+            Showing <span className="font-semibold">{indexOfFirstOrder + 1}</span> to{" "}
+            <span className="font-semibold">
+                {Math.min(indexOfLastOrder, orders.length)}
+            </span>{" "}
+            of <span className="font-semibold">{orders.length}</span> orders
+        </span>
+        
+        <div className="mt-2">
+            <Pagination
+                currentPage={currentPage}
+                totalPages={Math.ceil(orders.length / ordersPerPage)}
+                onPageChange={onPageChange}
+                showIcons
+                layout="pagination"
+            />
+        </div>
+    </div>
+</div>
             </CardContent>
             {isModalOpen && (
                 <div id="productModal" className="fixed z-10 inset-0 overflow-y-auto">

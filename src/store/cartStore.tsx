@@ -1,5 +1,5 @@
-import { Product } from "@/models/product";
-import { create } from "zustand";
+import { Product } from "@/models/product"; // import product model
+import { create } from "zustand"; // zustand for state management
 
 
 interface CartItem {
@@ -7,11 +7,13 @@ interface CartItem {
     quantity: number;
 }
 
-interface CartState {
+interface CartState { // define the cart state
     items: CartItem[];
     addItem: (product: Product) => void;
     removeItem: (product: Product) => void;
 }
+
+// Creating our cart store with zustand - this manages all cart data across the app
 export const useCartStore = create<CartState>((set) => ({
     items: [],
     addItem: (product) =>
