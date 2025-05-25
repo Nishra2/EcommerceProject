@@ -1,32 +1,31 @@
 'use client';
 
-import { useState,useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
-import { useRouter,useSearchParams } from 'next/navigation';
-
-export const dynamic = 'force-dynamic';
-
+import { useRouter } from 'next/navigation';
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
     const [successMessage, setSuccessMessage] = useState('');
-    const searchParams = useSearchParams();
+    const router = useRouter();
 
     useEffect(() => {
-        
-        const message = searchParams.get('message');
-        if (message) {
-            setSuccessMessage(message);
-            const url = new URL(window.location.href);
-            url.searchParams.delete('message');
-            window.history.replaceState({}, '', url.toString());
+        // Get message from URL without using useSearchParams
+        if (typeof window !== 'undefined') {
+            const urlParams = new URLSearchParams(window.location.search);
+            const message = urlParams.get('message');
+            if (message) {
+                setSuccessMessage(message);
+                // Clean up URL
+                const url = new URL(window.location.href);
+                url.searchParams.delete('message');
+                window.history.replaceState({}, '', url.toString());
+            }
         }
-    }, [searchParams])
-
-    const router = useRouter()
+    }, []);
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -52,13 +51,17 @@ const LoginPage = () => {
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
             <div className="px-8 py-6 mx-auto mt-4 text-left bg-white shadow-lg md:w-1/3 lg:w-1/3 sm:w-1/3">
                 <h1 className="text-3xl font-bold text-center">Login</h1>
-                 {/* Success message */}
+                
+                {/* Success message */}
                 {successMessage && (
                     <div className="mt-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded">
                         {successMessage}
                     </div>
                 )}
-                {error && <p className="text-red-500 text-sm text-center">{error}</p>}
+                
+                {/* Error message */}
+                {error && <p className="text-red-500 text-sm text-center mt-4">{error}</p>}
+                
                 <form onSubmit={handleSubmit}>
                     <div className="mt-4">
                         <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
@@ -78,7 +81,7 @@ const LoginPage = () => {
                             Password
                         </label>
                         <input
-                        data-testid="login-password-input"
+                            data-testid="login-password-input"
                             className="w-full px-4 py-2 mt-2 border rounded-md focus:outline-none focus:ring-1 focus:ring-blue-600"
                             type="password"
                             placeholder="Password"
@@ -87,7 +90,7 @@ const LoginPage = () => {
                         />
                     </div>
                     <div className="flex items-center justify-between mt-6">
-                        <button  data-testid="login-submit-button" className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue active:bg-blue-800" type="submit">
+                        <button data-testid="login-submit-button" className="px-4 py-2 text-white bg-blue-500 rounded-md hover:bg-blue-600 focus:outline-none focus:shadow-outline-blue active:bg-blue-800" type="submit">
                             Login
                         </button>
                         <Link href="/register" className="text-sm text-blue-500 hover:underline">
@@ -95,7 +98,6 @@ const LoginPage = () => {
                         </Link>
                     </div>
                 </form>
-                
             </div>
         </div>
     );
