@@ -26,7 +26,7 @@ const ProductCard: React.FC<ProductCardProps> = ({ product }) => {
                     <h5 className="mb-2 text-2xl font-bold tracking-tight text-gray-900 dark:text-white text-center"data-testid="product-name">{product.name}</h5>
                 </a>
                 <p className="mb-3 font-normal text-gray-700 dark:text-gray-400 text-center"data-testid="product-description">{product.description}</p>
-                <p className="mb-3 font-bold text-gray-700 dark:text-gray-400 text-center"data-testid="product-price">${product.price}</p>
+                <p className="mb-3 font-bold text-gray-700 dark:text-gray-400 text-center"data-testid="product-price">${product.price.toFixed(2)}</p>
                 {product.category && (
                     <div className="mb-3 text-center">
                         <span className="inline-block bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300"data-testid="product-category">

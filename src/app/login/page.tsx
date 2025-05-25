@@ -1,20 +1,34 @@
 'use client';
 
-import { useState } from 'react';
+import { useState,useEffect } from 'react';
 import { signIn } from 'next-auth/react';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+import { useRouter,useSearchParams } from 'next/navigation';
 
 const LoginPage = () => {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
+    const [successMessage, setSuccessMessage] = useState('');
+    const searchParams = useSearchParams();
+
+    useEffect(() => {
+        
+        const message = searchParams.get('message');
+        if (message) {
+            setSuccessMessage(message);
+            const url = new URL(window.location.href);
+            url.searchParams.delete('message');
+            window.history.replaceState({}, '', url.toString());
+        }
+    }, [searchParams])
 
     const router = useRouter()
 
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         setError('');
+        setSuccessMessage('');
 
         const result = await signIn('credentials', {
             redirect: false,
@@ -35,6 +49,12 @@ const LoginPage = () => {
         <div className="flex items-center justify-center min-h-screen bg-gray-100">
             <div className="px-8 py-6 mx-auto mt-4 text-left bg-white shadow-lg md:w-1/3 lg:w-1/3 sm:w-1/3">
                 <h1 className="text-3xl font-bold text-center">Login</h1>
+                 {/* Success message */}
+                {successMessage && (
+                    <div className="mt-4 p-3 bg-green-100 border border-green-400 text-green-700 rounded">
+                        {successMessage}
+                    </div>
+                )}
                 {error && <p className="text-red-500 text-sm text-center">{error}</p>}
                 <form onSubmit={handleSubmit}>
                     <div className="mt-4">

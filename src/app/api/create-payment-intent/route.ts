@@ -6,6 +6,7 @@ const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   apiVersion: "2024-12-18.acacia",
 });
 
+// function that calculates the total amount from the cart items
 const calculateOrderAmount = (items) => {
   
   let total = 0;
@@ -15,10 +16,15 @@ const calculateOrderAmount = (items) => {
   return total;
 };
 
+// Define the API endpoint handler for POST requests
+
 export async function POST(req: Request) {
+    // Extract the items array from the incoming request body
+
   const { items } = await req.json();
 
-  
+    // Create a payment intent in Stripe 
+
   const paymentIntent = await stripe.paymentIntents.create({
     amount: calculateOrderAmount(items),
     currency: "aud",

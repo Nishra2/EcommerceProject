@@ -1,11 +1,11 @@
-import { NextResponse } from "next/server";
-import Stripe from "stripe";
+import { NextResponse } from "next/server"; // next.js response handling
+import Stripe from "stripe"; // stripe library for payment processing
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
   // @ts-ignore: Using a different API version than the latest
   apiVersion: "2024-12-18.acacia",
 });
-
+// allow cors for cross-origin requests
 const corsHeaders = {
   "Access-Control-Allow-Origin": "*",
   "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
@@ -34,6 +34,8 @@ export async function POST(req: Request) {
     const session = await stripe.checkout.sessions.create({
       line_items,
       mode: "payment",
+            // URLs to redirect to after payment succeeds or is canceled
+
       success_url: `${req.headers.get("origin")}/success`,
       cancel_url: `${req.headers.get("origin")}/cancel`,
       metadata: {

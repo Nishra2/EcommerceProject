@@ -1,5 +1,7 @@
 'use client';
+// Import React and the useState hook for managing component state
 import React, { useState } from 'react';
+// Import our cart store to access and modify cart items
 import { useCartStore } from '../store/cartStore';
 import { useRouter } from 'next/navigation';
 import { Button } from "./ui/button";
@@ -51,10 +53,15 @@ const ShoppingCart: React.FC = () => {
         }
     };
 
+     const handleReturnHome = () => {
+        router.push('/');
+    };
+
     return (
-        <Card>
+        <Card className = "w-full max-w-4xl mx-auto">
             <CardHeader>
                 <CardTitle>Shopping Cart</CardTitle>
+                
             </CardHeader>
             <CardContent>
                 {items.length === 0 ? (
@@ -82,6 +89,13 @@ const ShoppingCart: React.FC = () => {
                     className="mb-2"
                 >
                     {isProcessing ? 'Processing...' : 'Checkout'}
+                </Button>
+                <Button 
+                className='bg-red-500 hover:bg-red-600 text-white'
+                    variant="outline" 
+                    onClick={handleReturnHome}
+                >
+                    Return to Home
                 </Button>
                 
                 {/* Error message display */}

@@ -30,7 +30,7 @@ const RegisterPage = () => {
             });
 
             if (response.ok) {
-                router.push('/login');
+                router.push('/login?message=You have successfully registered. Please login to continue.');
             } else {
                 const data = await response.json();
                 setError(data.message || 'Something went wrong');
